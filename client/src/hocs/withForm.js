@@ -15,7 +15,7 @@ export default compose(
     onError: ({ setLoading, setError }) => err => {
       setLoading(false)
       setError('Username already exist')
-    },
+    }
   }),
   pure
 )

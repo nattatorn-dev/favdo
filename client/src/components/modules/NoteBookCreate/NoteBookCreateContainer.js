@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { reduxForm, formValueSelector } from 'redux-form'
 import { compose, pure, setDisplayName } from 'recompose'
 import { withForm } from 'hocs'
-import CREATE_NOTEBOOK from './graphql'
+import { CREATE_NOTEBOOK } from './graphql'
 import validate from './validate'
 
 import NoteBookCreate from './NoteBookCreate'

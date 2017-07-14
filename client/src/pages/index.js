@@ -4,8 +4,7 @@ import withData from 'libraries/withData'
 import { authenticate } from 'services/AuthService'
 
 import App from '@components/App'
-import Header from '@components/Header'
-import { LayoutAuth as Layout } from '@components/layouts'
+import { LayoutAuth as Layout, Header } from '@components/layouts'
 
 const Page = ({ user, url: { pathname } }) =>
   <App>

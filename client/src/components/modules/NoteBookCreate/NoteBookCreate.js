@@ -11,6 +11,7 @@ import { Field, SubmissionError } from 'redux-form'
 import styled from 'styled-components'
 import { Button } from 're-bulma'
 
+import OpenGraph from './OpenGraphContainer'
 import { FormField } from 'shared'
 
 const submit = (createPost, onRequest, onSuccess, onError) => async values => {
@@ -42,27 +43,37 @@ const NoteBookCreate = ({
   onRequest,
   onSuccess,
   url
-}) =>
-  <form
-    onSubmit={handleSubmit(submit(createPost, onRequest, onSuccess, onError))}>
-    <h1>Create Post</h1>
-    {error &&
-      <div className="alert alert-danger">
-        {error}
-      </div>}
-    <Field name="url" type="text" component={FormField} placeholder="url" />
-    {url && <OpenGraph url={url} />}
-    <Field name="title" type="text" component={FormField} placeholder="title" />
-    <pre>
-      {formError}
-    </pre>
-    {!loading &&
-      <Button buttonStyle="isOutlined" color="isPrimary" type="submit">
-        Submit
-      </Button>}
-    {loading && <Button state="isLoading">Loading</Button>}
-  </form>
-
+}) => {
+  console.log(url)
+  return (
+    <form
+      onSubmit={handleSubmit(
+        submit(createPost, onRequest, onSuccess, onError)
+      )}>
+      <h1>Create Post</h1>
+      {error &&
+        <div className="alert alert-danger">
+          {error}
+        </div>}
+      <Field name="url" type="text" component={FormField} placeholder="url" />
+      {url && <OpenGraph url={url} />}
+      <Field
+        name="title"
+        type="text"
+        component={FormField}
+        placeholder="title"
+      />
+      <pre>
+        {formError}
+      </pre>
+      {!loading &&
+        <Button buttonStyle="isOutlined" color="isPrimary" type="submit">
+          Submit
+        </Button>}
+      {loading && <Button state="isLoading">Loading</Button>}
+    </form>
+  )
+}
 export default compose(
   setDisplayName('NoteBookCreate'),
   setPropTypes({

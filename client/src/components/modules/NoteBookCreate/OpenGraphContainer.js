@@ -1,49 +1,46 @@
 import { graphql } from 'react-apollo'
-import { connect } from 'react-redux'
-import { reduxForm, formValueSelector } from 'redux-form'
-import { compose, pure, setDisplayName } from 'recompose'
-import { withForm } from 'hocs'
-import CREATE_NOTEBOOK from './graphql'
-import validate from './validate'
+import {
+  compose,
+  lifecycle,
+  pure,
+  setDisplayName,
+  withProps,
+  withHandlers,
+  withState
+} from 'recompose'
+import { withMutatable } from 'hocs'
+import { string } from 'utils'
+import { GET_OPENGRAPH } from './graphql'
 
-import NoteBookCreate from './NoteBookCreate'
+import OpenGraph from './OpenGraph'
 
 export default compose(
-  setDisplayName('NoteBookCreateContainer'),
-  graphql(CREATE_NOTEBOOK, {
-    props: ({ ownProps, mutate }) => ({
-      createPost: (title, url) =>
-        mutate({
-          variables: { title, url },
-          optimisticResponse: {
-            __typename: 'Mutation',
-            createPost: {
-              __typename: 'Post',
-              id: ownProps.id,
-              title,
-              url,
-              votes: 0,
-              createdAt: new Date()
-            }
-          },
-          updateQueries: {
-            allPosts: (previousResult, { mutationResult }) => {
-              const newPost = mutationResult.data.createPost
-              return Object.assign({}, previousResult, {
-                allPosts: [newPost, ...previousResult.allPosts]
-              })
-            }
-          }
-        })
-    })
+  setDisplayName('OpenGraphContainer'),
+  graphql(GET_OPENGRAPH),
+  withMutatable(),
+  withState('enableFetchOg', 'setEnableFetchOg', true),
+  withHandlers({
+    onRequest: ({ enableFetchOg, setEnableFetchOg }) => () => {
+      setEnableFetchOg(!enableFetchOg)
+    }
   }),
-  reduxForm({
-    form: 'createNoteBookForm',
-    validate
+  withProps({
+    isUrl: string.isUrl
   }),
-  connect(state =>
-    formValueSelector('createNoteBookForm')(state, 'title', 'url')
-  ),
-  withForm,
+  lifecycle({
+    shouldComponentUpdate(nextProps) {
+      const { isUrl, url } = this.props
+      if (nextProps.url !== url && isUrl(nextProps.url)) {
+        console.log('------------------------------------')
+        console.log('change')
+        console.log('------------------------------------')
+        return true
+      }
+      return false
+    },
+    componentDidUpdate() {
+      this.props.submit(null, { url: this.props.url })
+    }
+  }),
   pure
-)(NoteBookCreate)
+)(OpenGraph)

@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet'
 import withData from 'libraries/withData'
 
 import App from '@components/App'
-import Header from '@components/Header'
+import { Header } from '@components/layouts'
 import CreatePost from '@components/CreateForm'
 
 export default withData(props =>

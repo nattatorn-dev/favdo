@@ -4,10 +4,9 @@ import { Input } from 're-bulma'
 const FormField = ({
   input,
   input: { name },
-  label,
   type,
   placeholder,
-  meta: { touched, error, warning }
+  meta: { touched, error }
 }) => {
   const config =
     touched && error

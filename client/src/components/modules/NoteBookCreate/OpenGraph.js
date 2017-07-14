@@ -3,94 +3,90 @@ import PropTypes from 'prop-types'
 import {
   compose,
   defaultProps,
+  lifecycle,
   pure,
   setDisplayName,
-  setPropTypes
+  setPropTypes,
+  withProps,
+  withHandlers,
+  withState
 } from 'recompose'
-import { Field, SubmissionError } from 'redux-form'
-import styled from 'styled-components'
-import { Button } from 're-bulma'
+import {
+  Box,
+  Media,
+  MediaLeft,
+  MediaContent,
+  Content,
+  MediaRight,
+  Button
+} from 're-bulma'
 
-import { FormField } from 'shared'
+import { OpenGraphPreLoader } from '../../preloaders'
+import { ImageCircle } from 'shared'
 
-const submit = (createPost, onRequest, onSuccess, onError) => async values => {
-  try {
-    let url = values.url
-    if (!url.match(/^[a-zA-Z]+:\/\//)) {
-      url = `http://${url}`
-    }
-    onRequest()
-    createPost(values.title, url)
-      .then(({ data }) => {
-        onSuccess(data)
-      })
-      .catch(err => {
-        onError(err)
-      })
-  } catch (e) {
-    return Promise.reject(new SubmissionError({ _error: e.toString() }))
+// const fetchOpenGraph = async url => {
+//   console.log('url: ', url)
+//   this.props.submit(null, { url })
+// }
+
+const OpenGraph = ({
+  data: { ogTitle, ogDescription, ogUrl, ogImage },
+  data,
+  loading,
+  submit
+}) => {
+  console.log(submit)
+  if (loading) {
+    return (
+      <Box style={{ padding: '0 20px' }}>
+        <OpenGraphPreLoader limit={1} />
+      </Box>
+    )
   }
+  return (
+    <Box>
+      <Media>
+        {ogImageUrl &&
+          <MediaLeft>
+            <ImageCircle src={ogImageUrl} size={'128px'} radius={'50%'} />
+          </MediaLeft>}
+        <MediaContent>
+          <Content>
+            <p>
+              <strong style={{ color: 'black' }}>
+                {ogTitle}
+              </strong>
+              <br />
+              {ogDescription}
+            </p>
+            <p>
+              <strong>
+                {ogUrl}
+              </strong>
+            </p>
+          </Content>
+        </MediaContent>
+        <MediaRight>
+          <Button delete />
+        </MediaRight>
+      </Media>
+    </Box>
+  )
 }
 
-const NoteBookCreate = ({
-  createPost,
-  error,
-  formError,
-  handleSubmit,
-  loading,
-  onError,
-  onRequest,
-  onSuccess,
-  url
-}) =>
-  <form
-    onSubmit={handleSubmit(submit(createPost, onRequest, onSuccess, onError))}>
-    <h1>Create Post</h1>
-    {error &&
-      <div className="alert alert-danger">
-        {error}
-      </div>}
-    <Field name="url" type="text" component={FormField} placeholder="url" />
-    {url && <OpenGraph url={url} />}
-    <Field name="title" type="text" component={FormField} placeholder="title" />
-    <pre>
-      {formError}
-    </pre>
-    {!loading &&
-      <Button buttonStyle="isOutlined" color="isPrimary" type="submit">
-        Submit
-      </Button>}
-    {loading && <Button state="isLoading">Loading</Button>}
-  </form>
+// const OpenGraph = props => {
+//   console.log('props: ', props)
+
+//   return <div />
+// }
 
 export default compose(
-  setDisplayName('NoteBookCreate'),
+  setDisplayName('OpenGraph'),
   setPropTypes({
-    createPost: PropTypes.func.isRequired,
-    error: PropTypes.string,
-    formError: PropTypes.string,
-    handleSubmit: PropTypes.func.isRequired,
-    loading: PropTypes.bool.isRequired,
-    onError: PropTypes.func.isRequired,
-    onRequest: PropTypes.func.isRequired,
-    onSuccess: PropTypes.func.isRequired
+    data: PropTypes.object
   }),
   defaultProps({
-    error: '',
-    formError: ''
+    data: {}
   }),
   pure
-)(styled(NoteBookCreate)`
-  border-bottom: 1px solid #ececec;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-
-  > h1 {
-    font-size: 20px;
-  }
-
-  >input {
-    display: block;
-    margin-bottom: 10px;
-  }
-`)
+)(OpenGraph)

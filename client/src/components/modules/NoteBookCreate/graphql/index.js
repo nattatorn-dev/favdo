@@ -1,3 +1,4 @@
 import CREATE_NOTEBOOK from './createNoteBookMutations'
+import GET_OPENGRAPH from './getOpenGraphMutations.1'
 
-export default CREATE_NOTEBOOK
+export { CREATE_NOTEBOOK, GET_OPENGRAPH }
