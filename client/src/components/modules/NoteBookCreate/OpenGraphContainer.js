@@ -1,7 +1,9 @@
 import { graphql } from 'react-apollo'
 import {
+  branch,
   compose,
   lifecycle,
+  renderNothing,
   pure,
   setDisplayName,
   withProps,
@@ -17,30 +19,32 @@ import OpenGraph from './OpenGraph'
 export default compose(
   setDisplayName('OpenGraphContainer'),
   graphql(GET_OPENGRAPH),
-  withMutatable(),
   withState('enableFetchOg', 'setEnableFetchOg', true),
   withHandlers({
-    onRequest: ({ enableFetchOg, setEnableFetchOg }) => () => {
+    disableFetchOg: ({ enableFetchOg, setEnableFetchOg }) => () => {
       setEnableFetchOg(!enableFetchOg)
     }
   }),
   withProps({
     isUrl: string.isUrl
   }),
+  withMutatable(),
   lifecycle({
-    shouldComponentUpdate(nextProps) {
-      const { isUrl, url } = this.props
-      if (nextProps.url !== url && isUrl(nextProps.url)) {
-        console.log('------------------------------------')
-        console.log('change')
-        console.log('------------------------------------')
-        return true
+    componentDidMount() {
+      const { disableFetchOg, isUrl, submit, url } = this.props
+      if (isUrl(url)) {
+        submit(null, { url })
+        disableFetchOg()
       }
-      return false
     },
-    componentDidUpdate() {
-      this.props.submit(null, { url: this.props.url })
+    componentWillReceiveProps(nextProps) {
+      const { disableFetchOg, enableFetchOg, isUrl, submit, url } = this.props
+      if (nextProps.url !== url && enableFetchOg && isUrl(nextProps.url)) {
+        submit(null, { url })
+        disableFetchOg()
+      }
     }
   }),
+  branch(({ data }) => !data && !data.openGraph && renderNothing),
   pure
 )(OpenGraph)

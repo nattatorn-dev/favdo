@@ -2,7 +2,7 @@ import { graphql } from 'react-apollo'
 import { reduxForm } from 'redux-form'
 import { compose, pure } from 'recompose'
 import { withForm } from 'hocs'
-import { REGISTER } from './graphql'
+import REGISTER from './graphql'
 import validate from './validate'
 
 import Register from './Register'
