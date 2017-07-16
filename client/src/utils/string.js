@@ -1,5 +1,5 @@
 const isUrl = (url = '') => {
-  const expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi
+  const expression = /^(?:\w+:)?\/\/([^\s\.]+\.\S{2}|localhost[\:?\d]*)\S*$/
   const regex = new RegExp(expression)
   if (url.match(regex)) {
     return true
