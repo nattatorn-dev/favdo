@@ -19,6 +19,11 @@
     "heroku-postbuild": "next build",
     "release": "release"
   },
+  "pre-commit": "lint-staged",
+  "lint-staged": {
+    "gitDir": "../",
+    "src/*.js": ["eslint --fix 'src/*.js'", "git add"]
+  },
   "dependencies": {
     "apollo-upload-client": "^5.0.0",
     "babel-plugin-styled-components": "1.1.6",
@@ -78,11 +83,6 @@
   "engines": {
     "node": ">=7.6.0",
     "npm": ">=4"
-  },
-  "pre-commit": "lint-staged",
-  "lint-staged": {
-    "gitDir": "../",
-    "*.js": ["eslint --fix", "git add"]
   },
   "devDependencies": {
     "babel-eslint": "7.2.3",

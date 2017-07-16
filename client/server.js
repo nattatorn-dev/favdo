@@ -32,11 +32,13 @@ const ssrCache = new LRUCache({
 })
 
 const buildStats = isProd
-  ? JSON.parse(fs.readFileSync('./.next/build-stats.json', 'utf8').toString())
+  ? JSON.parse(
+      fs.readFileSync('./src/.next/build-stats.json', 'utf8').toString()
+    )
   : null
 
 const buildId = isProd
-  ? fs.readFileSync('./.next/BUILD_ID', 'utf8').toString()
+  ? fs.readFileSync('./src/.next/BUILD_ID', 'utf8').toString()
   : null
 
 /*
@@ -149,26 +151,26 @@ app.prepare().then(() => {
   )
 
   server.get('/sw.js', (req, res) =>
-    app.serveStatic(req, res, path.resolve('./.next/sw.js'))
+    app.serveStatic(req, res, path.resolve('./src/.next/sw.js'))
   )
 
   server.get('/manifest.html', (req, res) =>
-    app.serveStatic(req, res, path.resolve('./.next/manifest.html'))
+    app.serveStatic(req, res, path.resolve('./src/.next/manifest.html'))
   )
 
   server.get('/manifest.appcache', (req, res) =>
-    app.serveStatic(req, res, path.resolve('./.next/manifest.appcache'))
+    app.serveStatic(req, res, path.resolve('./src/.next/manifest.appcache'))
   )
 
   if (isProd) {
     server.get('/_next/-/app.js', (req, res) =>
-      app.serveStatic(req, res, path.resolve('./.next/app.js'))
+      app.serveStatic(req, res, path.resolve('./src/.next/app.js'))
     )
 
     const hash = buildStats['app.js'] ? buildStats['app.js'].hash : buildId
 
     server.get(`/_next/${hash}/app.js`, (req, res) =>
-      app.serveStatic(req, res, path.resolve('./.next/app.js'))
+      app.serveStatic(req, res, path.resolve('./src/.next/app.js'))
     )
   }
 
