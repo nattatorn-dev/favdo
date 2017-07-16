@@ -3,10 +3,10 @@ import { Helmet } from 'react-helmet'
 import withData from 'libraries/withData'
 import { authenticate } from 'services/AuthService'
 
-import App from '@components/App'
-import PostList from '@components/PostList'
-import NoteBookCreate from '@components/modules/NoteBookCreate/NoteBookCreateContainer'
-import { LayoutAuth as Layout, Header } from '@components/layouts'
+import App from 'components/App'
+import PostList from 'components/PostList'
+import NoteBookCreate from 'components/modules/NoteBookCreate/NoteBookCreateContainer'
+import { LayoutAuth as Layout, Header } from 'components/layouts'
 
 const Page = ({ user, url: { pathname } }) =>
   <App>
