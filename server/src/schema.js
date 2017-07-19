@@ -152,7 +152,7 @@ const typeDefs = [
   type Mutation {
     login(username: String!, password: String!): UserToken
     register(dispName: String, username: String, password: String): User
-    createPost(title: String, url: String): Post
+    createPost(title: String, url: String, description: String): Post
     updatePost(id: String, votes: Int): Post
     singleUpload (file: Upload!): File!
     multipleUpload (files: [Upload!]!): [File!]!
@@ -240,11 +240,12 @@ const resolvers = {
         return new UserModel(args).save();
       });
     },
-    createPost(root, { title, url }) {
+    createPost(root, { title, url, description }) {
       return new Promise((resolve, reject) => {
         let newPost = new PostModel({
           title,
           url,
+          description,
           createdAt: new Date(),
           votes: 0
         });
