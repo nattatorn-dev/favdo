@@ -3,16 +3,20 @@ import { Helmet } from 'react-helmet'
 import withData from 'libraries/withData'
 import { authenticate } from 'services/AuthService'
 
-import App from '@components/App'
-import { LayoutAuth as Layout, Header } from '@components/layouts'
+import App from 'components/App'
+import PostList from 'components/PostList'
+import NoteBookCreate from 'components/modules/NoteBookCreate/NoteBookCreateContainer'
+import { LayoutAuth as Layout, Header } from 'components/layouts'
 
 const Page = ({ user, url: { pathname } }) =>
   <App>
-    <Helmet>
-      <title>RAN! Example</title>
-    </Helmet>
     <Layout user={user} title="index">
+      <Helmet>
+        <title>RAN! Example</title>
+      </Helmet>
       <Header pathname={pathname} />
+      <NoteBookCreate />
+      <PostList />
     </Layout>
   </App>
 
@@ -24,10 +28,6 @@ Page.getInitialProps = async ({ req, res }) => {
 Page.propTypes = {
   user: PropTypes.object.isRequired,
   url: PropTypes.object.isRequired
-}
-
-Page.defaultProps = {
-  user: {}
 }
 
 export default withData(Page)

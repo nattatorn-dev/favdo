@@ -6,9 +6,10 @@ module.exports = {
   webpack: (config, { dev }) => {
     const prod = !dev
 
-    // config.plugins = config.plugins.filter(
-    //   plugin => plugin.constructor.name !== 'UglifyJsPlugin'
-    // )
+    config.plugins = config.plugins.filter(
+      plugin => plugin.constructor.name !== 'UglifyJsPlugin'
+    )
+
     config.plugins.push(new IgnorePlugin(/^\.\/locale$/, /moment$/))
 
     if (process.env.ANALYZE_BUILD) {

@@ -7,6 +7,7 @@ const GET_NOTEBOOK = gql`
       votes
       id
       url
+      description
       createdAt
     }
   }

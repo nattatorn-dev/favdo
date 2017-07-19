@@ -12,7 +12,7 @@ import styled from 'styled-components'
 import { Button } from 're-bulma'
 
 import OpenGraph from './OpenGraphContainer'
-import { FormField } from 'shared'
+import { FormField, FormFieldTextArea } from 'shared'
 
 const submit = (createPost, onRequest, onSuccess, onError) => async values => {
   try {
@@ -21,7 +21,7 @@ const submit = (createPost, onRequest, onSuccess, onError) => async values => {
       url = `http://${url}`
     }
     onRequest()
-    createPost(values.title, url)
+    createPost(values.title, url, values.description)
       .then(({ data }) => {
         onSuccess(data)
       })
@@ -54,6 +54,12 @@ const NoteBookCreate = ({
     <Field name="url" type="text" component={FormField} placeholder="url" />
     {url && <OpenGraph url={url} />}
     <Field name="title" type="text" component={FormField} placeholder="title" />
+    <Field
+      name="description"
+      type="text"
+      component={FormFieldTextArea}
+      placeholder="description"
+    />
     <pre>
       {formError}
     </pre>

@@ -12,6 +12,7 @@ const NoteBookInfo = ({ data: { post } }) =>
     <div>
       <span>
         ID: <b>{post.id}</b>
+        Description: {post.description}
       </span>
       <span>&nbsp;|&nbsp;</span>
       <span>

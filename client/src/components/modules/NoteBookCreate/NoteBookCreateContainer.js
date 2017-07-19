@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { reduxForm, formValueSelector } from 'redux-form'
 import { compose, pure, setDisplayName } from 'recompose'
 import { withForm } from 'hocs'
-import { CREATE_NOTEBOOK } from './graphql'
+import { CREATE_NOTEBOOK, GET_OPENGRAPH } from './graphql'
 import validate from './validate'
 
 import NoteBookCreate from './NoteBookCreate'
@@ -12,15 +12,16 @@ export default compose(
   setDisplayName('NoteBookCreateContainer'),
   graphql(CREATE_NOTEBOOK, {
     props: ({ ownProps, mutate }) => ({
-      createPost: (title, url) =>
+      createPost: (title, url, description) =>
         mutate({
-          variables: { title, url },
+          variables: { title, url, description },
           optimisticResponse: {
             __typename: 'Mutation',
             createPost: {
               __typename: 'Post',
               id: ownProps.id,
               title,
+              description,
               url,
               votes: 0,
               createdAt: new Date()
